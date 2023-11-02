@@ -9,34 +9,28 @@ type TodolistType = {
 };
 
 function App() {
-  let initTasks = [
-    { id: v1(), title: "TS", isDone: false },
-    { id: v1(), title: "ReduxToolkit", isDone: false },
-    { id: v1(), title: "JS", isDone: true },
-  ];
-
-  let arr = useState(initTasks);
-
-  let tasks = arr[0];
-  let setTasks = arr[1];
-
-  function removeTask(id: string) {
-    let filteredTasks = tasks.filter((t) => t.id !== id);
-    setTasks(filteredTasks);
+  function removeTask(id: string, todoListId: string) {
+    let task = tasks[todoListId];
+    let filteredTasks = task.filter((t) => t.id !== id);
+    tasks[todoListId] = filteredTasks;
+    setTasks({ ...tasks });
   }
 
-  function addTask(title: string) {
+  function addTask(title: string, todoListId: string) {
     let newTask = { id: v1(), title: title, isDone: false };
-    let newTasks = [newTask, ...tasks];
-    setTasks(newTasks);
+    let task = tasks[todoListId];
+    let newTasks = [newTask, ...task];
+    tasks[todoListId] = newTasks;
+    setTasks({ ...tasks });
   }
 
-  function ChangeStatus(taskId: string, isDone: boolean) {
-    let task = tasks.find((t) => t.id === taskId);
+  function ChangeStatus(taskId: string, isDone: boolean, todoListId: string) {
+    let t = tasks[todoListId];
+    let task = t.find((t) => t.id === taskId);
     if (task) {
       task.isDone = isDone;
     }
-    setTasks([...tasks]);
+    setTasks({ ...tasks });
   }
 
   let [TodoLists, setTodoLists] = useState<Array<TodolistType>>([
@@ -48,20 +42,16 @@ function App() {
   let todoListID1 = v1();
   let todoListID2 = v1();
 
-  let [allTasks, setAllTasks] = useState({
+  let [tasks, setTasks] = useState({
     [todoListID1]: [
-      {
-        id: v1(),
-        title: "Bla-bla-bla",
-        isDone: true,
-      },
+      { id: v1(), title: "React", isDone: true },
+      { id: v1(), title: "React", isDone: true },
+      { id: v1(), title: "React", isDone: false },
     ],
     [todoListID2]: [
-      {
-        id: v1(),
-        title: "Bla-bla-bla",
-        isDone: true,
-      },
+      { id: v1(), title: "Vue", isDone: true },
+      { id: v1(), title: "React", isDone: false },
+      { id: v1(), title: "React", isDone: true },
     ],
   });
 
